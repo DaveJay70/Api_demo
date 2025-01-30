@@ -88,5 +88,33 @@ namespace Api_demo.Controllers
             return NoContent();
         }
         #endregion
+
+        #region Countries
+        [HttpGet("countries")]
+        public IActionResult GetCountries()
+        {
+            var countries = _cityRepository.GetCountries();
+            if(!countries.Any())
+            {
+                return NotFound("No Countries Found");
+            }
+            return Ok(countries);
+        }
+        #endregion
+
+        #region GetStatesByCountryID
+        [HttpGet("states/{CountryID}")]
+        public IActionResult GetStatesByCountryID(int CountryID)
+        {
+            if (CountryID <= 0)
+                return BadRequest("Invaild CountryID");
+            var states = _cityRepository.GetStatesByCountryID(CountryID);
+            if (!states.Any())
+            {
+                return NotFound("No States Found ");
+            }
+            return Ok(states);
+        }
+        #endregion
     }
 }

@@ -1,10 +1,14 @@
 using Api_demo.Data;
+using Api_demo.Models;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddFluentValidation(fv =>
+        fv.RegisterValidatorsFromAssemblyContaining<CountryValidator>()); 
 builder.Services.AddScoped<CityRepository>();
 builder.Services.AddScoped<CountryRepository>();
 builder.Services.AddScoped<StateRepository>();

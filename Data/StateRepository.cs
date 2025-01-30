@@ -32,6 +32,7 @@ namespace Api_demo.Data
                     {
                         StateID = Convert.ToInt32(reader["StateID"]),
                         CountryID = Convert.ToInt32(reader["CountryID"]),
+                        CountryName = reader["CountryName"].ToString(),
                         StateName = reader["StateName"].ToString(),
                         StateCode = reader["StateCode"].ToString()
 
@@ -62,6 +63,7 @@ namespace Api_demo.Data
                     {
                         StateID = Convert.ToInt32(reader["StateID"]),
                         CountryID = Convert.ToInt32(reader["CountryID"]),
+                        CountryName = reader["CountryName"].ToString(),
                         StateName = reader["StateName"].ToString(),
                         StateCode = reader["StateCode"].ToString(),
                     };
@@ -126,6 +128,32 @@ namespace Api_demo.Data
                 return rowsAffected > 0;
             }
 
+        }
+        #endregion
+
+        #region GetCountry
+        public IEnumerable<CountryDropDownModel> GetCountries()
+        {
+            var countries = new List<CountryDropDownModel>();
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand command = new SqlCommand("[dbo].[PR_Country_DropDown]", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    countries.Add(new CountryDropDownModel
+                    {
+                        CountryID = Convert.ToInt32(reader["CountryID"]),
+                        CountryName = reader["CountryName"].ToString()
+                    });
+                }
+            }
+            return countries;
         }
         #endregion
     }

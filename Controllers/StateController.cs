@@ -85,5 +85,18 @@ namespace Api_demo.Controllers
             return NoContent();
         }
         #endregion
+
+        #region Countries
+        [HttpGet("countries")]
+        public IActionResult GetCountries()
+        {
+            var countries = _stateRepository.GetCountries();
+            if (!countries.Any())
+            {
+                return NotFound("No Countries Found");
+            }
+            return Ok(countries);
+        }
+        #endregion
     }
 }
